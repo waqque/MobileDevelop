@@ -1,0 +1,37 @@
+﻿{
+    "London":  {
+                   "windSpeed":  4.3,
+                   "temp":  11.6,
+                   "condition":  "Облачно",
+                   "windDeg":  244,
+                   "humidity":  79
+               },
+    "Tokyo":  {
+                  "windSpeed":  1.1,
+                  "temp":  14,
+                  "condition":  "Облачно",
+                  "windDeg":  280,
+                  "humidity":  91
+              },
+    "Moscow":  {
+                   "windSpeed":  1.9,
+                   "temp":  0.3,
+                   "condition":  "Снег",
+                   "windDeg":  122,
+                   "humidity":  95
+               },
+    "Paris":  {
+                  "windSpeed":  4.8,
+                  "temp":  15.2,
+                  "condition":  "Облачно",
+                  "windDeg":  247,
+                  "humidity":  57
+              },
+    "New York":  {
+                     "windSpeed":  1.5,
+                     "temp":  9.9,
+                     "condition":  "Ясно",
+                     "windDeg":  281,
+                     "humidity":  66
+                 }
+}
