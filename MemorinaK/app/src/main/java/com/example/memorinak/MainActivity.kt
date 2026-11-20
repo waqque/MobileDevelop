@@ -5,12 +5,19 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.Toast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
+
+    private var firstCard: ImageView? = null
+    private var secondCard: ImageView? = null
+    private var isBusy = false
+    private var matchedPairs = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -22,13 +29,13 @@ class MainActivity : AppCompatActivity() {
 
         val images = arrayOf(
             R.drawable.squarecat,
-            R.drawable.squarecat,
-            R.drawable.squarecat,
-            R.drawable.squarecat,
-            R.drawable.squarecat,
-            R.drawable.squarecat,
-            R.drawable.squarecat,
-            R.drawable.squarecat
+            R.drawable.cat_2,
+            R.drawable.cat_3,
+            R.drawable.cat_4,
+            R.drawable.cat_5,
+            R.drawable.cat_6,
+            R.drawable.cat_7,
+            R.drawable.cat_8
         )
 
         val cards = ArrayList<Int>()
@@ -64,18 +71,45 @@ class MainActivity : AppCompatActivity() {
         setContentView(layout)
     }
 
-    suspend fun setBackgroundWithDelay(v: View) {
-        val imgView = v as ImageView
-        val frontImage = v.tag as Int
+    suspend fun openCards(card: ImageView) {
+        if (isBusy || card == firstCard || card.visibility != View.VISIBLE) {
+            return
+        }
 
-        imgView.setImageResource(frontImage)
-        delay(1000)
-        imgView.setImageResource(R.drawable.card_back)
+        card.setImageResource(card.tag as Int)
+
+        if (firstCard == null) {
+            firstCard = card
+        } else {
+            secondCard = card
+            isBusy = true
+
+            delay(1000)
+
+            if (firstCard?.tag == secondCard?.tag) {
+                firstCard?.visibility = View.INVISIBLE
+                secondCard?.visibility = View.INVISIBLE
+                firstCard?.isClickable = false
+                secondCard?.isClickable = false
+                matchedPairs++
+
+                if (matchedPairs == 8) {
+                    Toast.makeText(applicationContext, "Победа! Все карты открыты!", Toast.LENGTH_LONG).show()
+                }
+            } else {
+                firstCard?.setImageResource(R.drawable.card_back)
+                secondCard?.setImageResource(R.drawable.card_back)
+            }
+
+            firstCard = null
+            secondCard = null
+            isBusy = false
+        }
     }
 
     val colorListener = View.OnClickListener {
         GlobalScope.launch(Dispatchers.Main) {
-            setBackgroundWithDelay(it)
+            openCards(it as ImageView)
         }
     }
 }
